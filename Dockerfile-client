@@ -1,0 +1,16 @@
+FROM golang:alpine AS builder
+
+COPY . /build/
+WORKDIR /build/
+
+RUN go mod download
+RUN GOOS=linux go build -o ./.bin/service ./quoteClient/main.go
+
+FROM alpine:latest
+
+WORKDIR /root/
+
+COPY --from=builder /build/.bin/service .
+EXPOSE 8082
+
+CMD ["./service"]

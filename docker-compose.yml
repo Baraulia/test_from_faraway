@@ -1,0 +1,23 @@
+version: '3.9'
+
+services:
+   quote_server:
+        container_name: quote_server
+        build:
+            dockerfile: Dockerfile-server
+            context: .
+        ports:
+            - "8081:8081"
+        restart: always
+
+   quote_client:
+       container_name: quote_client
+       build:
+           dockerfile: Dockerfile-client
+           context: .
+       ports:
+           - "8082:8082"
+       restart: always
+       depends_on:
+           - quote_server
+
